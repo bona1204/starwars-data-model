@@ -27,6 +27,13 @@ class Address(Base):
 
     def to_dict(self):
         return {} """
+class User(Base):
+    __tablename__= "user"
+    id= Column(Integer, primary_key=True)
+    username= Column(String(250),nullable=False)
+    firstname= Column(String(250),nullable=False)
+    lastname= Column(String(250),nullable=False)
+    email= Column(String(250),nullable=False)
 class People(Base):
     __tablename__= "people"
     id= Column(Integer, primary_key=True)
@@ -52,9 +59,11 @@ class Vehicles(Base):
 class Favorites(Base):
     __tablename__= "favorites"
     id= Column(Integer, primary_key=True)
+    user_id= Column(Integer,ForeignKey('user.id'))
     people_id= Column(Integer,ForeignKey('people.id'))
     planet_id= Column(Integer,ForeignKey('planet.id'))
     vehicles_id= Column(Integer,ForeignKey('vehicles.id'))
+    user = relationship(User)
     planet = relationship(Planet)
     people = relationship(People)
     vehicule = relationship(Vehicles)
