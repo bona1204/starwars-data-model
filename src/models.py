@@ -34,13 +34,6 @@ class User(Base):
     firstname= Column(String(250),nullable=False)
     lastname= Column(String(250),nullable=False)
     email= Column(String(250),nullable=False)
-class People(Base):
-    __tablename__= "people"
-    id= Column(Integer, primary_key=True)
-    name= Column(String(250),nullable=False)
-    gender= Column(String(250),nullable=False)
-    height= Column(String,nullable=False)
-    homeworld= Column(Integer,nullable=False)
 class Planet(Base):
     __tablename__= "planet"
     id= Column(Integer, primary_key=True)
@@ -56,17 +49,27 @@ class Vehicles(Base):
     max_atmosphering_speed= Column(Integer,nullable=False)
     cargo_capacity= Column(Integer,nullable=False)
     cost_in_credits= Column(Integer,nullable=False)
+class Character(Base):
+    __tablename__= "character"
+    id= Column(Integer, primary_key=True)
+    name= Column(String(250),nullable=False)
+    gender= Column(String(250),nullable=False)
+    height= Column(String,nullable=False)
+    homeworld= Column(String(250),ForeignKey('planet.id'))
+    Vehicles= Column(String(250),ForeignKey('vehicles.id'))
+    planet = relationship(Planet)
+    vehicles = relationship(Vehicles)
 class Favorites(Base):
     __tablename__= "favorites"
     id= Column(Integer, primary_key=True)
     user_id= Column(Integer,ForeignKey('user.id'))
-    people_id= Column(Integer,ForeignKey('people.id'))
+    character_id= Column(Integer,ForeignKey('character.id'))
     planet_id= Column(Integer,ForeignKey('planet.id'))
     vehicles_id= Column(Integer,ForeignKey('vehicles.id'))
     user = relationship(User)
     planet = relationship(Planet)
-    people = relationship(People)
-    vehicule = relationship(Vehicles)
+    character = relationship(Character)
+    vehicles = relationship(Vehicles)
     def to_dict(self):
         return {}
 ## Draw from SQLAlchemy base
